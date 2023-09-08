@@ -14,22 +14,37 @@ function App() {
     setError(null);
 
     try {
-      const response = await fetch("https://swapi.dev/api/films/");
+      const response = await fetch(
+        "https://react-movielist-backend-default-rtdb.asia-southeast1.firebasedatabase.app/movies.json"
+      );
 
       if (!response.ok) {
         throw new Error("Something went wrong!");
       }
 
       const data = await response.json();
-      const formattedMovies = data.results.map((moviedata) => {
-        return {
-          id: moviedata.episode_id,
-          title: moviedata.title,
-          openingText: moviedata.opening_crawl,
-          releaseDate: moviedata.release_date,
-        };
-      });
-      setMovies(formattedMovies);
+
+      const loadedMovies = [];
+      for (const key in data) {
+        loadedMovies.push({
+          id: key,
+          title: data[key].title,
+          openingText: data[key].openingText,
+          releaseDate: data[key].releaseDate,
+        });
+      }
+
+      // formatting according to starwars api(not using anymore) response
+      // const formattedMovies = data.map((moviedata) => {
+      //   return {
+      //     id: moviedata.episode_id,
+      //     title: moviedata.title,
+      //     openingText: moviedata.opening_crawl,
+      //     releaseDate: moviedata.release_date,
+      //   };
+      // });
+
+      setMovies(loadedMovies);
     } catch (error) {
       setError(error.message);
     }
