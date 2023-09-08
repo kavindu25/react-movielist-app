@@ -40,8 +40,20 @@ function App() {
     fetchMoviesHandler();
   }, [fetchMoviesHandler]);
 
-  function addMovieHandler(movie) {
-    console.log(movie);
+  async function addMovieHandler(movie) {
+    // console.log(movie);
+    const response = await fetch(
+      "https://react-movielist-backend-default-rtdb.asia-southeast1.firebasedatabase.app/movies.json",
+      {
+        method: "POSt",
+        body: JSON.stringify(movie), // converting movie js object to JSON format
+        header: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await response.json();
+    console.log(data);
   }
 
   // using then blocks instead of async/await
